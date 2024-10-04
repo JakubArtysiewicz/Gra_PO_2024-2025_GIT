@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0r5o33ki7cim"]
+
+[ext_resource type="Script" path="res://scripts/menu.gd" id="1_2c1tr"]
+[ext_resource type="Texture2D" uid="uid://cgvf55g3nmuda" path="res://resources/MafiaSpangebob.jpeg" id="2_itvt1"]
+
+[node name="Menu" type="Node2D"]
+position = Vector2(74, 50)
+script = ExtResource("1_2c1tr")
+
+[node name="MafiaSpangebob" type="Sprite2D" parent="."]
+position = Vector2(503, 273)
+scale = Vector2(3.83667, 3.90476)
+texture = ExtResource("2_itvt1")
+
+[node name="Start" type="Button" parent="."]
+offset_left = 318.0
+offset_top = 295.0
+offset_right = 725.0
+offset_bottom = 402.0
+text = "Start"
+
+[node name="Settings" type="Button" parent="."]
+offset_left = 318.0
+offset_top = 426.0
+offset_right = 729.0
+offset_bottom = 533.0
+text = "Settings"
+
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
