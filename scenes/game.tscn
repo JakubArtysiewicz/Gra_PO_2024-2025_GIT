@@ -1,10 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://cq0e5pyy4ae3"]
+[gd_scene load_steps=3 format=3 uid="uid://cq0e5pyy4ae3"]
 
 [ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/Blackjack_stol.jpg" id="1_iq1nm"]
+[ext_resource type="Script" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_ufpdv")
 
 [node name="BlackjackStol" type="Sprite2D" parent="."]
 position = Vector2(574, 322.5)
 scale = Vector2(1.49219, 2.16333)
 texture = ExtResource("1_iq1nm")
+
+[node name="Gra" type="Button" parent="BlackjackStol"]
+offset_left = 225.172
+offset_top = 96.8414
+offset_right = 356.172
+offset_bottom = 134.841
+text = "GRA"
+
+[connection signal="pressed" from="BlackjackStol/Gra" to="." method="_on_gra_pressed"]

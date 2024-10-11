@@ -9,7 +9,7 @@ func _ready():
 
 func _on_start_pressed():
 	#var scene = load("res://scenes/game.tscn")
-	get_tree().change_scene("res://scenes/game.tscn")
+	get_tree().change_scene_to_file("res://scenes/game.tscn")
 	#get_tree().change_scene("res://scenes/game.tscn")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
