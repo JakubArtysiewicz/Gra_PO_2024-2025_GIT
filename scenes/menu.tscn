@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://d0r5o33ki7cim"]
+[gd_scene load_steps=6 format=3 uid="uid://d0r5o33ki7cim"]
 
 [ext_resource type="Script" path="res://scripts/menu.gd" id="1_2c1tr"]
 [ext_resource type="Texture2D" uid="uid://cgvf55g3nmuda" path="res://resources/MafiaSpangebob.jpeg" id="2_itvt1"]
@@ -8,6 +8,10 @@
 font = ExtResource("3_vejm6")
 font_size = 64
 font_color = Color(0.137255, 0.486275, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ekrdn"]
+font = ExtResource("3_vejm6")
+font_size = 64
 
 [node name="Menu" type="Node2D"]
 position = Vector2(74, 50)
@@ -32,12 +36,20 @@ offset_right = 729.0
 offset_bottom = 533.0
 text = "Settings"
 
-[node name="Label" type="Label" parent="."]
+[node name="BlackJackSimulator2025" type="Label" parent="."]
 offset_left = 128.0
 offset_top = 174.0
 offset_right = 940.0
 offset_bottom = 325.0
 text = "Black Jack SIMULATOR 2025"
 label_settings = SubResource("LabelSettings_13qyi")
+
+[node name="Money" type="Label" parent="."]
+offset_left = 858.0
+offset_top = 20.0
+offset_right = 1066.0
+offset_bottom = 101.0
+text = "100"
+label_settings = SubResource("LabelSettings_ekrdn")
 
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]

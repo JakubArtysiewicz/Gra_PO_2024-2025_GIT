@@ -1,21 +1,81 @@
-[gd_scene load_steps=3 format=3 uid="uid://cq0e5pyy4ae3"]
+[gd_scene load_steps=8 format=3 uid="uid://cq0e5pyy4ae3"]
 
 [ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/Blackjack_stol.jpg" id="1_iq1nm"]
 [ext_resource type="Script" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
+[ext_resource type="Texture2D" uid="uid://dkwh0k1at837p" path="res://resources/zeton100.jpg" id="3_q6q1m"]
+[ext_resource type="Texture2D" uid="uid://bnbhbaotw6jdh" path="res://resources/zeton500.jpeg" id="4_ma8x2"]
+[ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/Casino3DFilled.ttf" id="5_ysyom"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2pja3"]
+font = ExtResource("5_ysyom")
+font_size = 32
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dq4lb"]
+size = Vector2(560.5, 148.5)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_ufpdv")
 
 [node name="BlackjackStol" type="Sprite2D" parent="."]
-position = Vector2(574, 322.5)
-scale = Vector2(1.49219, 2.16333)
+position = Vector2(575.499, 322.5)
+scale = Vector2(1.49609, 2.16333)
 texture = ExtResource("1_iq1nm")
 
-[node name="Gra" type="Button" parent="BlackjackStol"]
-offset_left = 225.172
-offset_top = 96.8414
-offset_right = 356.172
-offset_bottom = 134.841
-text = "GRA"
+[node name="Start" type="Button" parent="BlackjackStol"]
+offset_left = 117.974
+offset_top = 89.4454
+offset_right = 212.974
+offset_bottom = 136.445
+text = "Rozdaj
+"
 
-[connection signal="pressed" from="BlackjackStol/Gra" to="." method="_on_gra_pressed"]
+[node name="Zeton100" type="Sprite2D" parent="."]
+position = Vector2(85, 569)
+scale = Vector2(0.167702, 0.177019)
+texture = ExtResource("3_q6q1m")
+
+[node name="Zeton500" type="Sprite2D" parent="."]
+position = Vector2(213.375, 567.375)
+scale = Vector2(0.485556, 0.501111)
+texture = ExtResource("4_ma8x2")
+
+[node name="MoneyGame" type="Label" parent="."]
+offset_left = 36.0
+offset_top = 453.0
+offset_right = 283.0
+offset_bottom = 503.0
+text = "1000"
+label_settings = SubResource("LabelSettings_2pja3")
+
+[node name="2x" type="Button" parent="."]
+offset_left = 849.0
+offset_top = 524.0
+offset_right = 948.0
+offset_bottom = 617.0
+text = "Podwój 
+stawkę"
+
+[node name="Dobierz" type="Button" parent="."]
+offset_left = 954.0
+offset_top = 525.0
+offset_right = 1048.0
+offset_bottom = 611.0
+text = "Dobierz"
+
+[node name="Niedobierz" type="Button" parent="."]
+offset_left = 1050.0
+offset_top = 527.0
+offset_right = 1139.0
+offset_bottom = 613.0
+text = "Nie 
+dobieraj"
+
+[node name="RekaGracza" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RekaGracza"]
+position = Vector2(575, 384)
+shape = SubResource("RectangleShape2D_dq4lb")
+
+[connection signal="pressed" from="BlackjackStol/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Dobierz" to="." method="_on_dobierz_pressed"]
+[connection signal="pressed" from="Niedobierz" to="." method="_on_niedobierz_pressed"]
