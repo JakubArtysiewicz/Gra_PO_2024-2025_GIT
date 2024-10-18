@@ -1,7 +1,8 @@
 extends Node2D
-
-var polozone_pieniadze = 1000
-
+var wszystkie_pieniadze = 10000
+var polozone_pieniadze = 0
+	
+#onready var popup = $Popup
 
 #var test_sprawdzania_wartosci_kart1 = ["karo",["piki",2],["piki",2],["piki",3],["piki",5],["piki","A"]] #13
 #var test_sprawdzenia_wartosci_kart2 = [["karo","A"],["karo","Q"],["karo",1]] #21
@@ -20,11 +21,11 @@ var lista_dostepnych_kolorow = [0,1,2,3]
 
 var karty_krupiera = []
 var karty_gracza = []
-#
-#var wartosc_kart_krupiera = 0
-#var wartosc_kart_gracza = 0
 
 func _ready():
+	
+	$Popup.hide()
+	
 	
 	#print(sprawdzenie_wartosci_kart(test_sprawdzania_wartosci_kart1))
 	#print(sprawdzenie_wartosci_kart(test_sprawdzenia_wartosci_kart2))
@@ -32,10 +33,11 @@ func _ready():
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	# Replace with function body.
-
+	
 func _process(delta):
-	pass
+	$wszystkiepieniadze.text = "wszystkie pieniadze: " + str(wszystkie_pieniadze)
+	$postawionepieniadze.text = "postawione pieniadze: " + str(polozone_pieniadze)
+	
 	
 func sprawdzenie_wartosci_kart(lista):
 	var wartosci_kart = 0
@@ -108,27 +110,134 @@ func dobieranie_na_start_gracz():
 	losowanie_karty(karty_gracza)
 
 func _on_start_pressed():
+	if polozone_pieniadze != 0:
+		$"2x".visible = true
+		$Dobierz.visible = true
+		$Niedobierz.visible = true
 	
-	$"2x".visible = true
-	$Dobierz.visible = true
-	$Niedobierz.visible = true
+		dobranie_na_start_krupier()
+		dobieranie_na_start_gracz()
 	
-	dobranie_na_start_krupier()
-	dobieranie_na_start_gracz()
-	
-	print("Karty gracza:", karty_gracza, sprawdzenie_wartosci_kart(karty_gracza))
-	print("Karty krupiera:", karty_krupiera, sprawdzenie_wartosci_kart(karty_krupiera))
+		print("Karty gracza:", karty_gracza, sprawdzenie_wartosci_kart(karty_gracza))
+		print("Karty krupiera:", karty_krupiera, sprawdzenie_wartosci_kart(karty_krupiera))
 
-	$BlackjackStol/Start.visible = false 
-
+		$BlackjackStol/Start.visible = false 
+	else:
+		show_popup("Prosze dodać zakład")
+		
+	
 
 func _on_dobierz_pressed():
 	losowanie_karty(karty_gracza)
 	print(karty_gracza,sprawdzenie_wartosci_kart(karty_gracza))
 	if sprawdzenie_wartosci_kart(karty_gracza)>21:
-		_exit_tree()
+		przegrana()
+		
 
 func _on_niedobierz_pressed():
-	if sprawdzenie_wartosci_kart(karty_gracza > karty_krupiera):
-		polozone_pieniadze+=polozone_pieniadze
-	print(polozone_pieniadze)
+	while sprawdzenie_wartosci_kart(karty_krupiera)<17:
+		losowanie_karty(karty_krupiera)
+		print(karty_krupiera,sprawdzenie_wartosci_kart(karty_krupiera))
+	if sprawdzenie_wartosci_kart(karty_krupiera) < sprawdzenie_wartosci_kart(karty_gracza) and sprawdzenie_wartosci_kart(karty_gracza)!=21 and sprawdzenie_wartosci_kart(karty_krupiera)!=20:
+		losowanie_karty(karty_krupiera)
+		print(karty_krupiera,sprawdzenie_wartosci_kart(karty_krupiera))
+	if sprawdzenie_wartosci_kart(karty_krupiera)>21:
+		wygrana()
+	if sprawdzenie_wartosci_kart(karty_gracza)>sprawdzenie_wartosci_kart(karty_krupiera):
+		wygrana()
+	if sprawdzenie_wartosci_kart(karty_gracza)<sprawdzenie_wartosci_kart(karty_krupiera):
+		przegrana()
+	if sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
+		remis()
+		
+func _on_x_pressed():
+	polozone_pieniadze += polozone_pieniadze
+	wszystkie_pieniadze -= polozone_pieniadze
+	
+func _on_zeton_500_button_pressed():
+	polozone_pieniadze+=500
+	wszystkie_pieniadze-=500
+
+func _on_zeton_100_button_pressed():
+	polozone_pieniadze+=100
+	wszystkie_pieniadze-=100
+
+func przegrana():
+	
+	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_trefl = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+
+	lista_dostepnych_kolorow = [0,1,2,3]
+
+	karty_krupiera = []
+	karty_gracza = []
+	
+	print("przegrana")
+	wszystkie_pieniadze-=polozone_pieniadze 
+	polozone_pieniadze=0
+	
+	show_popup_longer("przegrana")
+	
+	$"2x".visible = false
+	$Dobierz.visible = false
+	$Niedobierz.visible = false
+	
+	$BlackjackStol/Start.visible = true
+	
+func wygrana():
+	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_trefl = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+
+	lista_dostepnych_kolorow = [0,1,2,3]
+
+	karty_krupiera = []
+	karty_gracza = []
+	
+	print("wygrana")
+	wszystkie_pieniadze+=(polozone_pieniadze*2)
+	polozone_pieniadze=0
+	show_popup_longer("wygrana")
+	
+	$"2x".visible = false
+	$Dobierz.visible = false
+	$Niedobierz.visible = false
+	
+	$BlackjackStol/Start.visible = true
+	
+func remis():
+	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+	karty_trefl = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
+
+	lista_dostepnych_kolorow = [0,1,2,3]
+
+	karty_krupiera = []
+	karty_gracza = []
+	show_popup_longer("Remis")
+	
+	$"2x".visible = false
+	$Dobierz.visible = false
+	$Niedobierz.visible = false
+	
+	$BlackjackStol/Start.visible = true
+
+func show_popup(message): 
+	$Popup.get_node("Label").text = message  
+	$Popup.popup_centered()
+	$popup_timer.start()
+	
+func show_popup_longer(message):
+	$Popup.get_node("Label").text = message  
+	$Popup.popup_centered()
+	$popup_timer2.start()
+
+func _on_popup_timer_timeout():
+	$Popup.hide()
+
+func _on_popup_timer_2_timeout():
+	$Popup.hide()

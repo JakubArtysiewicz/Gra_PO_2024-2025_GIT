@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cq0e5pyy4ae3"]
+[gd_scene load_steps=10 format=3 uid="uid://cq0e5pyy4ae3"]
 
 [ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/Blackjack_stol.jpg" id="1_iq1nm"]
 [ext_resource type="Script" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
@@ -12,6 +12,14 @@ font_size = 32
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dq4lb"]
 size = Vector2(560.5, 148.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fj88m"]
+font = ExtResource("5_ysyom")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_vghjy"]
+font = ExtResource("5_ysyom")
+font_size = 32
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_ufpdv")
@@ -39,12 +47,11 @@ position = Vector2(213.375, 567.375)
 scale = Vector2(0.485556, 0.501111)
 texture = ExtResource("4_ma8x2")
 
-[node name="MoneyGame" type="Label" parent="."]
+[node name="wszystkiepieniadze" type="Label" parent="."]
 offset_left = 36.0
 offset_top = 453.0
 offset_right = 283.0
 offset_bottom = 503.0
-text = "1000"
 label_settings = SubResource("LabelSettings_2pja3")
 
 [node name="2x" type="Button" parent="."]
@@ -76,6 +83,43 @@ dobieraj"
 position = Vector2(575, 384)
 shape = SubResource("RectangleShape2D_dq4lb")
 
+[node name="Zeton500button" type="Button" parent="."]
+offset_left = 158.0
+offset_top = 510.0
+offset_right = 268.0
+offset_bottom = 624.0
+
+[node name="Zeton100button" type="Button" parent="."]
+offset_left = 31.0
+offset_top = 512.0
+offset_right = 139.0
+offset_bottom = 628.0
+
+[node name="postawionepieniadze" type="Label" parent="."]
+offset_left = 36.0
+offset_top = 406.0
+offset_right = 262.0
+offset_bottom = 455.0
+label_settings = SubResource("LabelSettings_fj88m")
+
+[node name="Popup" type="Popup" parent="."]
+visible = true
+
+[node name="Label" type="Label" parent="Popup"]
+offset_right = 40.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_vghjy")
+
+[node name="popup_timer" type="Timer" parent="."]
+
+[node name="popup_timer2" type="Timer" parent="."]
+wait_time = 7.0
+
 [connection signal="pressed" from="BlackjackStol/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="2x" to="." method="_on_x_pressed"]
 [connection signal="pressed" from="Dobierz" to="." method="_on_dobierz_pressed"]
 [connection signal="pressed" from="Niedobierz" to="." method="_on_niedobierz_pressed"]
+[connection signal="pressed" from="Zeton500button" to="." method="_on_zeton_500_button_pressed"]
+[connection signal="pressed" from="Zeton100button" to="." method="_on_zeton_100_button_pressed"]
+[connection signal="timeout" from="popup_timer" to="." method="_on_popup_timer_timeout"]
+[connection signal="timeout" from="popup_timer2" to="." method="_on_popup_timer_2_timeout"]
