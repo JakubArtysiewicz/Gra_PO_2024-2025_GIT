@@ -1,16 +1,43 @@
-extends Node2D
-var wszystkie_pieniadze = 10000
-var polozone_pieniadze = 0
-	
-#onready var popup = $Popup
-
-#var test_sprawdzania_wartosci_kart1 = ["karo",["piki",2],["piki",2],["piki",3],["piki",5],["piki","A"]] #13
-#var test_sprawdzenia_wartosci_kart2 = [["karo","A"],["karo","Q"],["karo",1]] #21
 
 #PIK = Piki (♠) – karty w kolorze czarnym = 0
 #KAR = Karo (♦) – karty w kolorze czerwonym = 1
 #KIE = Kier (♥) – karty w kolorze czerwonym = 2
 #TRE = Trefl (♣) – karty w kolorze czarnym = 3
+
+extends Node2D
+#
+var plik_konfiguracyjny = ConfigFile.new()
+
+func create_image(sciezka_do_obrazka):
+	
+	var texture = load(sciezka_do_obrazka)
+	var new_image = TextureRect.new()
+	new_image.texture = texture
+	
+	new_image.position = Vector2(200, 200)  # Ustaw pozycję na (x, y)
+
+	add_child(new_image)
+	#
+	#new_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT  # Zachowuje proporcje obrazu
+	#
+	#new_image.rect_size = Vector2(100, 100)
+	#
+	#
+
+func zapisywanie_gry():
+	plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
+	plik_konfiguracyjny.set_value("pieniadze","polozone_pieniadze", polozone_pieniadze)
+	var blad = plik_konfiguracyjny.save("res://resources/plik_konfiguracyjny.cfg")
+	if blad != OK:
+		print("Błąd przy zapisywniu pliku:", blad)
+		
+func odczytywanie_z_pliku_konf(sekcja, zmienna):
+	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	if err == OK:
+		var wartosci = plik_konfiguracyjny.get_value(sekcja, zmienna, 0)
+		return wartosci
+	else:
+		print("Błąd przy ładowaniu pliku konfiguracyjnego:", err)
 
 var karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 var karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -23,16 +50,23 @@ var karty_krupiera = []
 var karty_gracza = []
 
 func _ready():
-	
+	create_image("res://resources/zeton100.jpg")
+	var blad = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	if blad != OK or plik_konfiguracyjny.get_value("game_data", "first_run", true):
+		
+		plik_konfiguracyjny.set_value("game_data", "first_run", false)
+		plik_konfiguracyjny.set_value("pieniadze", "wszystkie_pieniadze", 10000)
+	   
+		plik_konfiguracyjny.save("res://resources/plik_konfiguracyjny.cfg")
+
 	$Popup.hide()
-	
-	
-	#print(sprawdzenie_wartosci_kart(test_sprawdzania_wartosci_kart1))
-	#print(sprawdzenie_wartosci_kart(test_sprawdzenia_wartosci_kart2))
 	
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
+
+var wszystkie_pieniadze = odczytywanie_z_pliku_konf("pieniadze", "wszystkie_pieniadze")
+var polozone_pieniadze = odczytywanie_z_pliku_konf("pieniadze","polozone_pieniadze")
 	
 func _process(delta):
 	$wszystkiepieniadze.text = "wszystkie pieniadze: " + str(wszystkie_pieniadze)
@@ -155,12 +189,20 @@ func _on_x_pressed():
 	wszystkie_pieniadze -= polozone_pieniadze
 	
 func _on_zeton_500_button_pressed():
-	polozone_pieniadze+=500
-	wszystkie_pieniadze-=500
+	
+	if wszystkie_pieniadze>=500:	
+		polozone_pieniadze+=500
+		wszystkie_pieniadze-=500
+	else:
+		show_popup("Za mało pieniedzy")
 
 func _on_zeton_100_button_pressed():
-	polozone_pieniadze+=100
-	wszystkie_pieniadze-=100
+	
+	if wszystkie_pieniadze>=100:	
+		polozone_pieniadze+=100
+		wszystkie_pieniadze-=100
+	else:
+		show_popup("Za mało pieniedzy")
 
 func przegrana():
 	
@@ -186,6 +228,8 @@ func przegrana():
 	
 	$BlackjackStol/Start.visible = true
 	
+	zapisywanie_gry()
+	
 func wygrana():
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -208,6 +252,8 @@ func wygrana():
 	
 	$BlackjackStol/Start.visible = true
 	
+	zapisywanie_gry()
+	
 func remis():
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -218,13 +264,15 @@ func remis():
 
 	karty_krupiera = []
 	karty_gracza = []
-	show_popup_longer("Remis")
+	show_popup_longer("chjj")
 	
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
 	
 	$BlackjackStol/Start.visible = true
+	
+	zapisywanie_gry()
 
 func show_popup(message): 
 	$Popup.get_node("Label").text = message  

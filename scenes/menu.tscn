@@ -44,12 +44,13 @@ offset_bottom = 325.0
 text = "Black Jack SIMULATOR 2025"
 label_settings = SubResource("LabelSettings_13qyi")
 
-[node name="Money" type="Label" parent="."]
+[node name="Wszystkie_pieniadze" type="Label" parent="."]
 offset_left = 858.0
 offset_top = 20.0
 offset_right = 1066.0
 offset_bottom = 101.0
-text = "100"
+text = "
+"
 label_settings = SubResource("LabelSettings_ekrdn")
 
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
