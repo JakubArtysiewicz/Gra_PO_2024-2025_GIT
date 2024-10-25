@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/Blackjack_stol.jpg" id="1_iq1nm"]
 [ext_resource type="Script" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
-[ext_resource type="Texture2D" uid="uid://dkwh0k1at837p" path="res://resources/zeton100.jpg" id="3_q6q1m"]
-[ext_resource type="Texture2D" uid="uid://bnbhbaotw6jdh" path="res://resources/zeton500.jpeg" id="4_ma8x2"]
+[ext_resource type="Texture2D" uid="uid://be1o1jwpjiq0t" path="res://resources/zeton100.png" id="3_rknpe"]
+[ext_resource type="Texture2D" uid="uid://bok7f0xpydaw1" path="res://resources/zeton500.png" id="4_6kox7"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/Casino3DFilled.ttf" id="5_ysyom"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2pja3"]
@@ -36,16 +36,6 @@ offset_right = 212.974
 offset_bottom = 136.445
 text = "Rozdaj
 "
-
-[node name="Zeton100" type="Sprite2D" parent="."]
-position = Vector2(85, 569)
-scale = Vector2(0.167702, 0.177019)
-texture = ExtResource("3_q6q1m")
-
-[node name="Zeton500" type="Sprite2D" parent="."]
-position = Vector2(213.375, 567.375)
-scale = Vector2(0.485556, 0.501111)
-texture = ExtResource("4_ma8x2")
 
 [node name="wszystkiepieniadze" type="Label" parent="."]
 offset_left = 36.0
@@ -83,18 +73,6 @@ dobieraj"
 position = Vector2(575, 384)
 shape = SubResource("RectangleShape2D_dq4lb")
 
-[node name="Zeton500button" type="Button" parent="."]
-offset_left = 158.0
-offset_top = 510.0
-offset_right = 268.0
-offset_bottom = 624.0
-
-[node name="Zeton100button" type="Button" parent="."]
-offset_left = 31.0
-offset_top = 512.0
-offset_right = 139.0
-offset_bottom = 628.0
-
 [node name="postawionepieniadze" type="Label" parent="."]
 offset_left = 36.0
 offset_top = 406.0
@@ -115,11 +93,34 @@ label_settings = SubResource("LabelSettings_vghjy")
 [node name="popup_timer2" type="Timer" parent="."]
 wait_time = 7.0
 
+[node name="zeton500" type="TextureButton" parent="."]
+offset_left = 20.0
+offset_top = 475.0
+offset_right = 520.0
+offset_bottom = 975.0
+scale = Vector2(0.3, 0.3)
+texture_normal = ExtResource("4_6kox7")
+
+[node name="zeton100" type="TextureButton" parent="."]
+offset_left = 170.0
+offset_top = 475.0
+offset_right = 670.0
+offset_bottom = 975.0
+scale = Vector2(0.300955, 0.300845)
+texture_normal = ExtResource("3_rknpe")
+
+[node name="usuwniezeton100" type="Button" parent="."]
+visible = false
+offset_left = 215.0
+offset_top = 280.0
+offset_right = 285.0
+offset_bottom = 350.0
+
 [connection signal="pressed" from="BlackjackStol/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="2x" to="." method="_on_x_pressed"]
 [connection signal="pressed" from="Dobierz" to="." method="_on_dobierz_pressed"]
 [connection signal="pressed" from="Niedobierz" to="." method="_on_niedobierz_pressed"]
-[connection signal="pressed" from="Zeton500button" to="." method="_on_zeton_500_button_pressed"]
-[connection signal="pressed" from="Zeton100button" to="." method="_on_zeton_100_button_pressed"]
 [connection signal="timeout" from="popup_timer" to="." method="_on_popup_timer_timeout"]
 [connection signal="timeout" from="popup_timer2" to="." method="_on_popup_timer_2_timeout"]
+[connection signal="pressed" from="zeton500" to="." method="_on_zeton_500_pressed"]
+[connection signal="pressed" from="zeton100" to="." method="_on_zeton_100_pressed"]

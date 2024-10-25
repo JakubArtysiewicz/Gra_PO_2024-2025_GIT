@@ -8,21 +8,17 @@ extends Node2D
 #
 var plik_konfiguracyjny = ConfigFile.new()
 
-func create_image(sciezka_do_obrazka):
+func create_image(sciezka_do_obrazka,wektor1,wektor2):
 	
 	var texture = load(sciezka_do_obrazka)
-	var new_image = TextureRect.new()
+	var new_image = Sprite2D.new()
 	new_image.texture = texture
 	
-	new_image.position = Vector2(200, 200)  # Ustaw pozycję na (x, y)
+	new_image.position = Vector2(wektor1,wektor2) 
+	
+	new_image.scale = Vector2(0.2, 0.2) 
 
 	add_child(new_image)
-	#
-	#new_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT  # Zachowuje proporcje obrazu
-	#
-	#new_image.rect_size = Vector2(100, 100)
-	#
-	#
 
 func zapisywanie_gry():
 	plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
@@ -50,7 +46,7 @@ var karty_krupiera = []
 var karty_gracza = []
 
 func _ready():
-	create_image("res://resources/zeton100.jpg")
+	create_image("res://resources/zeton500.png",215,280)
 	var blad = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
 	if blad != OK or plik_konfiguracyjny.get_value("game_data", "first_run", true):
 		
@@ -188,16 +184,15 @@ func _on_x_pressed():
 	polozone_pieniadze += polozone_pieniadze
 	wszystkie_pieniadze -= polozone_pieniadze
 	
-func _on_zeton_500_button_pressed():
-	
+func _on_zeton_500_pressed():
 	if wszystkie_pieniadze>=500:	
 		polozone_pieniadze+=500
 		wszystkie_pieniadze-=500
+		$usuwniezeton100.visible = true
 	else:
 		show_popup("Za mało pieniedzy")
-
-func _on_zeton_100_button_pressed():
-	
+		
+func _on_zeton_100_pressed():
 	if wszystkie_pieniadze>=100:	
 		polozone_pieniadze+=100
 		wszystkie_pieniadze-=100
@@ -289,3 +284,6 @@ func _on_popup_timer_timeout():
 
 func _on_popup_timer_2_timeout():
 	$Popup.hide()
+
+
+	
