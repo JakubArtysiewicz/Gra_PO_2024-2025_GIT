@@ -1,4 +1,3 @@
-
 #PIK = Piki (♠) – karty w kolorze czarnym = 0
 #KAR = Karo (♦) – karty w kolorze czerwonym = 1
 #KIE = Kier (♥) – karty w kolorze czerwonym = 2
@@ -8,17 +7,24 @@ extends Node2D
 #
 var plik_konfiguracyjny = ConfigFile.new()
 
-func create_image(sciezka_do_obrazka,wektor1,wektor2):
+func create_image_do_zetonow(sciezka_do_obrazka, wektor1, wektor2 ,lista_do_dodania):
+	
+	var random_wektor1 = randi_range(-4, 4)
+	var random_wektor2 = randi_range(-4,4)
 	
 	var texture = load(sciezka_do_obrazka)
 	var new_image = Sprite2D.new()
 	new_image.texture = texture
+	new_image.rotation= -32.7 
+	new_image.position = Vector2(wektor1+random_wektor1, wektor2+random_wektor2)
+	new_image.scale = Vector2(0.2, 0.2)
 	
-	new_image.position = Vector2(wektor1,wektor2) 
-	
-	new_image.scale = Vector2(0.2, 0.2) 
-
 	add_child(new_image)
+	
+	lista_do_dodania.append(new_image)
+	print(lista_do_dodania)
+
+
 
 func zapisywanie_gry():
 	plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
@@ -45,8 +51,14 @@ var lista_dostepnych_kolorow = [0,1,2,3]
 var karty_krupiera = []
 var karty_gracza = []
 
+var ilosc_postawionych_zetonow_100 = 0
+var ilosc_postawionych_zetonow_500 = 0
+
+var lista_nodeow_postawionych_zetonow_100 = []
+var lista_nodeow_postawionych_zetonow_500 = []
+
 func _ready():
-	create_image("res://resources/zeton500.png",215,280)
+	randomize()
 	var blad = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
 	if blad != OK or plik_konfiguracyjny.get_value("game_data", "first_run", true):
 		
@@ -56,7 +68,10 @@ func _ready():
 		plik_konfiguracyjny.save("res://resources/plik_konfiguracyjny.cfg")
 
 	$Popup.hide()
+
 	
+	$usuwniezeton100.visible = false
+	$usuwniezeton500.visible = false
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
@@ -65,6 +80,7 @@ var wszystkie_pieniadze = odczytywanie_z_pliku_konf("pieniadze", "wszystkie_pien
 var polozone_pieniadze = odczytywanie_z_pliku_konf("pieniadze","polozone_pieniadze")
 	
 func _process(delta):
+	
 	$wszystkiepieniadze.text = "wszystkie pieniadze: " + str(wszystkie_pieniadze)
 	$postawionepieniadze.text = "postawione pieniadze: " + str(polozone_pieniadze)
 	
@@ -185,17 +201,24 @@ func _on_x_pressed():
 	wszystkie_pieniadze -= polozone_pieniadze
 	
 func _on_zeton_500_pressed():
-	if wszystkie_pieniadze>=500:	
+	if wszystkie_pieniadze>=500:
+		if ilosc_postawionych_zetonow_500>0:
+			create_image_do_zetonow("res://resources/zeton500.png",230,300,lista_nodeow_postawionych_zetonow_500)	
+		ilosc_postawionych_zetonow_500 += 1
 		polozone_pieniadze+=500
 		wszystkie_pieniadze-=500
-		$usuwniezeton100.visible = true
+		$usuwniezeton500.visible = true
 	else:
 		show_popup("Za mało pieniedzy")
 		
 func _on_zeton_100_pressed():
-	if wszystkie_pieniadze>=100:	
+	if wszystkie_pieniadze>=100:
+		if ilosc_postawionych_zetonow_100>0:
+			create_image_do_zetonow("res://resources/zeton100.png",170,190,lista_nodeow_postawionych_zetonow_100)
+		ilosc_postawionych_zetonow_100 += 1 	
 		polozone_pieniadze+=100
 		wszystkie_pieniadze-=100
+		$usuwniezeton100.visible = true
 	else:
 		show_popup("Za mało pieniedzy")
 
@@ -285,5 +308,25 @@ func _on_popup_timer_timeout():
 func _on_popup_timer_2_timeout():
 	$Popup.hide()
 
-
+func _on_usuwniezeton_100_pressed():
+	if polozone_pieniadze>=100 and ilosc_postawionych_zetonow_100>=1:
+		polozone_pieniadze-=100
+		wszystkie_pieniadze+=100
+		ilosc_postawionych_zetonow_100 -= 1
+		if ilosc_postawionych_zetonow_100 == 0:
+			$usuwniezeton100.visible = false
+		if ilosc_postawionych_zetonow_100 != 0:
+				lista_nodeow_postawionych_zetonow_100[-1].visible=false
+				lista_nodeow_postawionych_zetonow_100.pop_back()
 	
+
+func _on_usuwniezeton_500_pressed():
+	if polozone_pieniadze>=500 and ilosc_postawionych_zetonow_500>=1:
+		polozone_pieniadze-=500
+		wszystkie_pieniadze+=500
+		ilosc_postawionych_zetonow_500 -= 1
+		if ilosc_postawionych_zetonow_500 == 0:
+			$usuwniezeton500.visible = false
+		if ilosc_postawionych_zetonow_500 != 0:
+				lista_nodeow_postawionych_zetonow_500[-1].visible=false
+				lista_nodeow_postawionych_zetonow_500.pop_back()
