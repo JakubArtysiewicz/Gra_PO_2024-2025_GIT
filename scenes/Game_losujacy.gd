@@ -2,10 +2,29 @@
 #KAR = Karo (♦) – karty w kolorze czerwonym = 1
 #KIE = Kier (♥) – karty w kolorze czerwonym = 2
 #TRE = Trefl (♣) – karty w kolorze czarnym = 3
-
 extends Node2D
-#
+
+#func aktualna_godzina():
+	#var date = time.date()
+	#var time = time.time()
+	
+var akutalny_wynik_gry = ""
+
+
 var plik_konfiguracyjny = ConfigFile.new()
+
+func aktualna_godzina():
+	var datetime = Time.get_datetime_dict_from_system()
+	var formatted_time = "%04d-%02d-%02d %02d:%02d:%02d" % [
+		datetime.year,
+		datetime.month,
+		datetime.day,
+		datetime.hour,
+		datetime.minute,
+		datetime.second
+		]
+	return formatted_time
+
 
 func create_image_do_zetonow(sciezka_do_obrazka, wektor1, wektor2 ,lista_do_dodania):
 	
@@ -27,11 +46,18 @@ func create_image_do_zetonow(sciezka_do_obrazka, wektor1, wektor2 ,lista_do_doda
 
 
 func zapisywanie_gry():
-	plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
-	plik_konfiguracyjny.set_value("pieniadze","polozone_pieniadze", polozone_pieniadze)
+	#plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
+	#plik_konfiguracyjny.set_value("pieniadze","polozone_pieniadze", polozone_pieniadze)
+	zapisywanie_gry_wsz_pol()
+	var dodac_do_listy = str(aktualna_godzina()," "+str(wszystkie_pieniadze)," "+str(polozone_pieniadze)," " + akutalny_wynik_gry)
+	add_value_to_config_list(dodac_do_listy)
 	var blad = plik_konfiguracyjny.save("res://resources/plik_konfiguracyjny.cfg")
 	if blad != OK:
 		print("Błąd przy zapisywniu pliku:", blad)
+		
+func zapisywanie_gry_wsz_pol():
+	plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
+	plik_konfiguracyjny.set_value("pieniadze","polozone_pieniadze", polozone_pieniadze)
 		
 func odczytywanie_z_pliku_konf(sekcja, zmienna):
 	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
@@ -40,6 +66,24 @@ func odczytywanie_z_pliku_konf(sekcja, zmienna):
 		return wartosci
 	else:
 		print("Błąd przy ładowaniu pliku konfiguracyjnego:", err)
+		
+func load_list_from_config() -> Array:
+	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	if err != OK:
+		print("Błąd ładowania pliku:", err)
+		return []
+	return plik_konfiguracyjny.get_value("historia", "lista", [])
+	
+func add_value_to_config_list(value: String):
+	plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	var current_list = plik_konfiguracyjny.get_value("historia", "lista", [])
+	current_list.append(value)  # Dodaj nową wartość
+	plik_konfiguracyjny.set_value("historia", "lista", current_list)  # Zapisz zmodyfikowaną listę
+	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	if err == OK:
+		print("Lista zapisana pomyślnie:", current_list)
+	else:
+		print("Błąd zapisu:", err)
 
 var karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 var karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -56,8 +100,10 @@ var ilosc_postawionych_zetonow_500 = 0
 
 var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
-
+		
 func _ready():
+	
+	#OS.window_close_request.connect(_on_window_close_request)
 	randomize()
 	var blad = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
 	if blad != OK or plik_konfiguracyjny.get_value("game_data", "first_run", true):
@@ -80,9 +126,9 @@ var wszystkie_pieniadze = odczytywanie_z_pliku_konf("pieniadze", "wszystkie_pien
 var polozone_pieniadze = odczytywanie_z_pliku_konf("pieniadze","polozone_pieniadze")
 	
 func _process(delta):
-	
 	$wszystkiepieniadze.text = "wszystkie pieniadze: " + str(wszystkie_pieniadze)
 	$postawionepieniadze.text = "postawione pieniadze: " + str(polozone_pieniadze)
+
 	
 	
 func sprawdzenie_wartosci_kart(lista):
@@ -197,8 +243,17 @@ func _on_niedobierz_pressed():
 		remis()
 		
 func _on_x_pressed():
-	polozone_pieniadze += polozone_pieniadze
-	wszystkie_pieniadze -= polozone_pieniadze
+	if wszystkie_pieniadze - polozone_pieniadze >= 0:
+		#polozone_pieniadze += polozone_pieniadze
+		#wszystkie_pieniadze -= polozone_pieniadze
+		for i in range(ilosc_postawionych_zetonow_500):
+			_on_zeton_500_pressed()
+		for i in range(ilosc_postawionych_zetonow_100):
+			_on_zeton_100_pressed()
+	else:
+		show_popup("Za mało pieniedzy")
+	$"2x".visible = false
+		
 	
 func _on_zeton_500_pressed():
 	if wszystkie_pieniadze>=500:
@@ -223,6 +278,8 @@ func _on_zeton_100_pressed():
 		show_popup("Za mało pieniedzy")
 
 func przegrana():
+	
+	akutalny_wynik_gry = "Przegrana"
 	
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -249,6 +306,8 @@ func przegrana():
 	zapisywanie_gry()
 	
 func wygrana():
+	
+	akutalny_wynik_gry="Wygrana"
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -273,6 +332,7 @@ func wygrana():
 	zapisywanie_gry()
 	
 func remis():
+	akutalny_wynik_gry = "Remis"
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -282,7 +342,7 @@ func remis():
 
 	karty_krupiera = []
 	karty_gracza = []
-	show_popup_longer("chjj")
+	show_popup_longer("Remis")
 	
 	$"2x".visible = false
 	$Dobierz.visible = false
@@ -330,3 +390,4 @@ func _on_usuwniezeton_500_pressed():
 		if ilosc_postawionych_zetonow_500 != 0:
 				lista_nodeow_postawionych_zetonow_500[-1].visible=false
 				lista_nodeow_postawionych_zetonow_500.pop_back()
+				

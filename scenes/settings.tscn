@@ -1,3 +1,23 @@
-[gd_scene format=3 uid="uid://bbg22xkixbdgf"]
+[gd_scene load_steps=2 format=3 uid="uid://bbg22xkixbdgf"]
 
-[node name="Settings" type="Node2D"]
+[ext_resource type="Script" path="res://scenes/settings.gd" id="1_wgtvd"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_wgtvd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1153.0
+offset_bottom = 323.0
+
+[node name="Historia" type="Button" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 493.0
+offset_right = 398.0
+offset_bottom = 607.0
+text = "Historia"
+
+[connection signal="pressed" from="Historia" to="." method="_on_historia_pressed"]

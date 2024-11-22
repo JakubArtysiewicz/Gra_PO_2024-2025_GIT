@@ -54,3 +54,4 @@ text = "
 label_settings = SubResource("LabelSettings_ekrdn")
 
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
