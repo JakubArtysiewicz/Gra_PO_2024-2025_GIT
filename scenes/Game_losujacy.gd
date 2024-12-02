@@ -4,14 +4,9 @@
 #TRE = Trefl (♣) – karty w kolorze czarnym = 3
 extends Node2D
 
-#func aktualna_godzina():
-	#var date = time.date()
-	#var time = time.time()
-	
 var akutalny_wynik_gry = ""
 
-
-var plik_konfiguracyjny = ConfigFile.new()
+var config_file = ConfigFile.new()
 
 func aktualna_godzina():
 	var datetime = Time.get_datetime_dict_from_system()
@@ -44,42 +39,39 @@ func create_image_do_zetonow(sciezka_do_obrazka, wektor1, wektor2 ,lista_do_doda
 	print(lista_do_dodania)
 
 
-
 func zapisywanie_gry():
-	#plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
-	#plik_konfiguracyjny.set_value("pieniadze","polozone_pieniadze", polozone_pieniadze)
-	zapisywanie_gry_wsz_pol()
-	var dodac_do_listy = str(aktualna_godzina()," "+str(wszystkie_pieniadze)," "+str(polozone_pieniadze)," " + akutalny_wynik_gry)
-	add_value_to_config_list(dodac_do_listy)
-	var blad = plik_konfiguracyjny.save("res://resources/plik_konfiguracyjny.cfg")
+	zapisywanie_gry_info()
+	config_file.set_value("pieniadze", "wszystkie_pieniadze", wszystkie_pieniadze)
+	config_file.set_value("pieniadze", "polozone_pieniadze", polozone_pieniadze)
+	var blad = config_file.save("res://resources/config_files/config_files.cfg")
 	if blad != OK:
-		print("Błąd przy zapisywniu pliku:", blad)
-		
-func zapisywanie_gry_wsz_pol():
-	plik_konfiguracyjny.set_value("pieniadze","wszystkie_pieniadze", wszystkie_pieniadze)
-	plik_konfiguracyjny.set_value("pieniadze","polozone_pieniadze", polozone_pieniadze)
-		
+		print("Błąd przy zapisywaniu pliku:", blad)
+	
+func zapisywanie_gry_info():
+	var dodac_do_listy = str(aktualna_godzina()) + " " + str(wszystkie_pieniadze) + " " + str(akutalny_wynik_gry)   
+	add_value_to_config_list_history(dodac_do_listy)	
+		#
 func odczytywanie_z_pliku_konf(sekcja, zmienna):
-	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	var err =config_file.load("res://resources/config_files/config_files.cfg")
 	if err == OK:
-		var wartosci = plik_konfiguracyjny.get_value(sekcja, zmienna, 0)
+		var wartosci = config_file.get_value(sekcja, zmienna, 0)
 		return wartosci
 	else:
 		print("Błąd przy ładowaniu pliku konfiguracyjnego:", err)
 		
-func load_list_from_config() -> Array:
-	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
-	if err != OK:
-		print("Błąd ładowania pliku:", err)
-		return []
-	return plik_konfiguracyjny.get_value("historia", "lista", [])
+#func load_list_from_config() -> Array:
+	#var err = config_file.load("res://resources/config_files/config_files.cfg")
+	#if err != OK:
+		#print("Błąd ładowania pliku:", err)
+		#return []
+	#return config_file.get_value("historia", "lista", [])
 	
-func add_value_to_config_list(value: String):
-	plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
-	var current_list = plik_konfiguracyjny.get_value("historia", "lista", [])
+func add_value_to_config_list_history(value: String):
+	config_file.load("res://resources/Config_files/config_files.cfg")
+	var current_list = config_file.get_value("historia", "lista", [])
 	current_list.append(value)  # Dodaj nową wartość
-	plik_konfiguracyjny.set_value("historia", "lista", current_list)  # Zapisz zmodyfikowaną listę
-	var err = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
+	config_file.set_value("historia", "lista", current_list)  # Zapisz zmodyfikowaną listę
+	var err = config_file.save("res://resources/config_files/config_files.cfg")
 	if err == OK:
 		print("Lista zapisana pomyślnie:", current_list)
 	else:
@@ -102,20 +94,14 @@ var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
 		
 func _ready():
-	
-	#OS.window_close_request.connect(_on_window_close_request)
 	randomize()
-	var blad = plik_konfiguracyjny.load("res://resources/plik_konfiguracyjny.cfg")
-	if blad != OK or plik_konfiguracyjny.get_value("game_data", "first_run", true):
+	var blad = config_file.load("res://resources/config_files/config_files.cfg")
+	if blad != OK or config_file.get_value("game_data", "first_run", true):
+		config_file.set_value("game_data", "first_run", false)
+		config_file.set_value("pieniadze", "wszystkie_pieniadze", 10000)
+		config_file.save("res://resources/config_files/config_files.cfg")
 		
-		plik_konfiguracyjny.set_value("game_data", "first_run", false)
-		plik_konfiguracyjny.set_value("pieniadze", "wszystkie_pieniadze", 10000)
-	   
-		plik_konfiguracyjny.save("res://resources/plik_konfiguracyjny.cfg")
-
 	$Popup.hide()
-
-	
 	$usuwniezeton100.visible = false
 	$usuwniezeton500.visible = false
 	$"2x".visible = false
@@ -126,11 +112,10 @@ var wszystkie_pieniadze = odczytywanie_z_pliku_konf("pieniadze", "wszystkie_pien
 var polozone_pieniadze = odczytywanie_z_pliku_konf("pieniadze","polozone_pieniadze")
 	
 func _process(delta):
+	#Updateowanie w czasie gry zmiany zakładów, ilość wszystkich pieniedzy
 	$wszystkiepieniadze.text = "wszystkie pieniadze: " + str(wszystkie_pieniadze)
 	$postawionepieniadze.text = "postawione pieniadze: " + str(polozone_pieniadze)
 
-	
-	
 func sprawdzenie_wartosci_kart(lista):
 	var wartosci_kart = 0
 	var ma_Asa = false
@@ -239,7 +224,7 @@ func _on_niedobierz_pressed():
 		wygrana()
 	if sprawdzenie_wartosci_kart(karty_gracza)<sprawdzenie_wartosci_kart(karty_krupiera):
 		przegrana()
-	if sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
+	elif sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
 		remis()
 		
 func _on_x_pressed():
@@ -305,51 +290,41 @@ func przegrana():
 	
 	zapisywanie_gry()
 	
+# Zapisywnie gry po wygranej gracza
 func wygrana():
-	
 	akutalny_wynik_gry="Wygrana"
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_trefl = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
-
 	lista_dostepnych_kolorow = [0,1,2,3]
-
 	karty_krupiera = []
 	karty_gracza = []
-	
 	print("wygrana")
 	wszystkie_pieniadze+=(polozone_pieniadze*2)
 	polozone_pieniadze=0
 	show_popup_longer("wygrana")
-	
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	
-	$BlackjackStol/Start.visible = true
-	
+	$BlackjackStol/Start.visible = true	
 	zapisywanie_gry()
 	
+# Zapisywnie gry po remisie gracza
 func remis():
 	akutalny_wynik_gry = "Remis"
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_trefl = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
-
 	lista_dostepnych_kolorow = [0,1,2,3]
-
 	karty_krupiera = []
 	karty_gracza = []
 	show_popup_longer("Remis")
-	
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	
 	$BlackjackStol/Start.visible = true
-	
 	zapisywanie_gry()
 
 func show_popup(message): 
@@ -391,3 +366,5 @@ func _on_usuwniezeton_500_pressed():
 				lista_nodeow_postawionych_zetonow_500[-1].visible=false
 				lista_nodeow_postawionych_zetonow_500.pop_back()
 				
+func _on_back_pressed():
+	get_tree().change_scene_to_file("res://scenes/menu.tscn")

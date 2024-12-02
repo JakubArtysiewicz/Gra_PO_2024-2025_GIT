@@ -37,6 +37,13 @@ offset_bottom = 136.445
 text = "Rozdaj
 "
 
+[node name="back" type="Button" parent="BlackjackStol"]
+offset_left = -382.663
+offset_top = -144.915
+offset_right = -292.663
+offset_bottom = -113.915
+text = "Menu"
+
 [node name="wszystkiepieniadze" type="Label" parent="."]
 offset_left = 36.0
 offset_top = 453.0
@@ -134,6 +141,7 @@ dialog_text = "Czy napewno chcesz wyjść ?
 (zostanie to uznane za poddanie się i stracisz pieniądze)"
 
 [connection signal="pressed" from="BlackjackStol/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="BlackjackStol/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="2x" to="." method="_on_x_pressed"]
 [connection signal="pressed" from="Dobierz" to="." method="_on_dobierz_pressed"]
 [connection signal="pressed" from="Niedobierz" to="." method="_on_niedobierz_pressed"]
