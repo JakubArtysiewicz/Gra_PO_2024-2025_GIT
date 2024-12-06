@@ -32,11 +32,8 @@ func create_image_do_zetonow(sciezka_do_obrazka, wektor1, wektor2 ,lista_do_doda
 	new_image.rotation= -32.7 
 	new_image.position = Vector2(wektor1+random_wektor1, wektor2+random_wektor2)
 	new_image.scale = Vector2(0.2, 0.2)
-	
 	add_child(new_image)
-	
 	lista_do_dodania.append(new_image)
-	print(lista_do_dodania)
 
 
 func zapisywanie_gry():
@@ -154,25 +151,21 @@ func losowanie_karty(lista):
 		if kolor_wylosowany == 0:
 			var liczba_wylosowana = randi() % karty_piki.size()
 			lista.append(["piki",karty_piki[liczba_wylosowana]])
-			#print("piki",karty_piki[liczba_wylosowana])
 			karty_piki.erase(karty_piki[liczba_wylosowana])
 		
 		if kolor_wylosowany == 1:
 			var liczba_wylosowana = randi() % karty_karo.size()
 			lista.append(["karo",karty_karo[liczba_wylosowana]])
-			#print("karo",karty_karo[liczba_wylosowana])
 			karty_karo.erase(karty_karo[liczba_wylosowana])
 	
 		if kolor_wylosowany == 2:
 			var liczba_wylosowana = randi() % karty_kier.size()
 			lista.append(["kier",karty_kier[liczba_wylosowana]])
-			#print("kier",karty_kier[liczba_wylosowana])
 			karty_kier.erase(karty_kier[liczba_wylosowana])
 	
 		if kolor_wylosowany == 3:
 			var liczba_wylosowana = randi() % karty_trefl.size()
 			lista.append(["trefl",karty_trefl[liczba_wylosowana]])
-			#print("trefl",karty_trefl[liczba_wylosowana])
 			karty_trefl.erase(karty_trefl[liczba_wylosowana])
 			
 	else:
@@ -187,7 +180,10 @@ func dobieranie_na_start_gracz():
 	losowanie_karty(karty_gracza)
 
 func _on_start_pressed():
+	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if polozone_pieniadze != 0:
+		
 		$"2x".visible = true
 		$Dobierz.visible = true
 		$Niedobierz.visible = true
@@ -229,8 +225,6 @@ func _on_niedobierz_pressed():
 		
 func _on_x_pressed():
 	if wszystkie_pieniadze - polozone_pieniadze >= 0:
-		#polozone_pieniadze += polozone_pieniadze
-		#wszystkie_pieniadze -= polozone_pieniadze
 		for i in range(ilosc_postawionych_zetonow_500):
 			_on_zeton_500_pressed()
 		for i in range(ilosc_postawionych_zetonow_100):
@@ -263,31 +257,26 @@ func _on_zeton_100_pressed():
 		show_popup("Za mało pieniedzy")
 
 func przegrana():
-	
 	akutalny_wynik_gry = "Przegrana"
-	
 	karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_kier = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 	karty_trefl = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
-
 	lista_dostepnych_kolorow = [0,1,2,3]
-
 	karty_krupiera = []
 	karty_gracza = []
-	
 	print("przegrana")
 	wszystkie_pieniadze-=polozone_pieniadze 
 	polozone_pieniadze=0
-	
 	show_popup_longer("przegrana")
-	
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	
 	$BlackjackStol/Start.visible = true
-	
+	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_PASS
+	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
+	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
+	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)	
 	zapisywanie_gry()
 	
 # Zapisywnie gry po wygranej gracza
@@ -308,6 +297,10 @@ func wygrana():
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
 	$BlackjackStol/Start.visible = true	
+	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_PASS
+	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
+	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
+	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)
 	zapisywanie_gry()
 	
 # Zapisywnie gry po remisie gracza
@@ -320,11 +313,17 @@ func remis():
 	lista_dostepnych_kolorow = [0,1,2,3]
 	karty_krupiera = []
 	karty_gracza = []
+	wszystkie_pieniadze+=polozone_pieniadze
+	polozone_pieniadze=0
 	show_popup_longer("Remis")
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
 	$BlackjackStol/Start.visible = true
+	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_PASS
+	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
+	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
+	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)
 	zapisywanie_gry()
 
 func show_popup(message): 
@@ -366,5 +365,14 @@ func _on_usuwniezeton_500_pressed():
 				lista_nodeow_postawionych_zetonow_500[-1].visible=false
 				lista_nodeow_postawionych_zetonow_500.pop_back()
 				
+func usuwanie_po_grze_zetonow(lista,przycisk):
+	while lista.size() > 0:
+		lista[0].visible = false
+		lista.pop_front()
+	przycisk.visible = false
+		
+		
 func _on_back_pressed():
+	#if polozone_pieniadze>0:
+		#show_popup_longer()
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")

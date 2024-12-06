@@ -27,6 +27,7 @@ offset_left = 318.0
 offset_top = 295.0
 offset_right = 725.0
 offset_bottom = 402.0
+theme_override_fonts/font = ExtResource("3_vejm6")
 text = "Start"
 
 [node name="Settings" type="Button" parent="."]
@@ -34,6 +35,7 @@ offset_left = 318.0
 offset_top = 426.0
 offset_right = 729.0
 offset_bottom = 533.0
+theme_override_fonts/font = ExtResource("3_vejm6")
 text = "Settings"
 
 [node name="BlackJackSimulator2025" type="Label" parent="."]

@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://r8s0gmex0rfs"]
+[gd_scene load_steps=5 format=3 uid="uid://r8s0gmex0rfs"]
 
 [ext_resource type="Script" path="res://scenes/ostatnie_gry.gd" id="1_gh53u"]
+[ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/Casino3DFilled.ttf" id="2_5a7p0"]
+[ext_resource type="Texture2D" uid="uid://bbs5ul1pr61rt" path="res://resources/alpha_male.jpg" id="3_fh5gq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xo7v3"]
+font = ExtResource("2_5a7p0")
+font_size = 100
+font_color = Color(1, 0, 0, 1)
 
 [node name="ostatnie_gry" type="Control"]
 layout_mode = 3
@@ -9,9 +16,38 @@ script = ExtResource("1_gh53u")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 0
-offset_left = 1.0
-offset_right = 1155.0
-offset_bottom = 650.0
+offset_top = 120.0
+offset_right = 1150.0
+offset_bottom = 674.0
+vertical_scroll_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+clip_contents = true
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 372.0
+offset_top = 12.0
+offset_right = 1522.0
+offset_bottom = 175.0
+text = "Historia"
+label_settings = SubResource("LabelSettings_xo7v3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+show_behind_parent = true
+position = Vector2(577.5, 337.25)
+scale = Vector2(1.62219, 1.00224)
+texture = ExtResource("3_fh5gq")
+
+[node name="back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 5.0
+offset_right = 300.0
+offset_bottom = 105.0
+theme_override_fonts/font = ExtResource("2_5a7p0")
+text = "Back"
+
+[connection signal="pressed" from="back" to="." method="_on_back_pressed"]
