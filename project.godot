@@ -15,6 +15,10 @@ run/main_scene="res://scenes/menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://resources/icon.svg"
 
+[autoload]
+
+MusicManager="*res://scripts/MusicManager.gd"
+
 [dotnet]
 
 project/assembly_name="Gra_PO_2024-2025_GODOT"

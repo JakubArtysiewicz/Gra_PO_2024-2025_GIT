@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://d0r5o33ki7cim"]
 
-[ext_resource type="Script" path="res://scripts/menu.gd" id="1_2c1tr"]
+[ext_resource type="Script" path="res://scenes/menu.gd" id="1_2c1tr"]
 [ext_resource type="Texture2D" uid="uid://cgvf55g3nmuda" path="res://resources/MafiaSpangebob.jpeg" id="2_itvt1"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/Casino3DFilled.ttf" id="3_vejm6"]
 

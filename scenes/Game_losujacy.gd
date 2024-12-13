@@ -373,6 +373,14 @@ func usuwanie_po_grze_zetonow(lista,przycisk):
 		
 		
 func _on_back_pressed():
-	#if polozone_pieniadze>0:
-		#show_popup_longer()
+	if polozone_pieniadze>0 and $Dobierz.visible == true: 
+		$ConfirmationDialog.popup_centered() 
+	else: 
+		get_tree().change_scene_to_file("res://scenes/menu.tscn")
+
+
+func _on_confirmation_dialog_confirmed():
+	przegrana() 
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
+	
+
