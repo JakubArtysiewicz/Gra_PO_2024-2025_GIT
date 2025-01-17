@@ -8,6 +8,17 @@ var akutalny_wynik_gry = ""
 
 var config_file = ConfigFile.new()
 
+func wyswietl_karty(typ,numer,px,py):
+	var sprite = Sprite2D.new()
+	var texture = load("res://resources/pictures/cards/%s/%s.png"%[typ,numer])
+	if texture == null:
+		texture = load("res://resources/pictures/cards/%s/%s.jpg"%[typ,numer])
+	sprite.texture = texture
+	sprite.position = Vector2(px,py)
+	sprite.scale = Vector2(0.2, 0.2)
+	add_child(sprite)
+		
+
 func aktualna_godzina():
 	var datetime = Time.get_datetime_dict_from_system()
 	var formatted_time = "%04d-%02d-%02d %02d:%02d:%02d" % [
@@ -91,6 +102,8 @@ var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
 		
 func _ready():
+	wyswietl_karty("trefl",3,550,200)
+	Musicmanager
 	randomize()
 	var blad = config_file.load("res://resources/config_files/config_files.cfg")
 	if blad != OK or config_file.get_value("game_data", "first_run", true):

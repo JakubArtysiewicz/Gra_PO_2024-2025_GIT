@@ -1,7 +1,7 @@
 extends Node2D
 
 func _ready():
-	pass
+	Musicmanager
 
 func _on_start_pressed():
 	get_tree().change_scene_to_file("res://scenes/game.tscn")

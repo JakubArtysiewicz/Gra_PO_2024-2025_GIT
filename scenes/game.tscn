@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://cq0e5pyy4ae3"]
 
-[ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/Blackjack_stol.jpg" id="1_iq1nm"]
+[ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/pictures/Blackjack_stol.jpg" id="1_iq1nm"]
 [ext_resource type="Script" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
-[ext_resource type="Texture2D" uid="uid://be1o1jwpjiq0t" path="res://resources/zeton100.png" id="3_rknpe"]
-[ext_resource type="Texture2D" uid="uid://bok7f0xpydaw1" path="res://resources/zeton500.png" id="4_6kox7"]
-[ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/Casino3DFilled.ttf" id="5_ysyom"]
+[ext_resource type="Texture2D" uid="uid://be1o1jwpjiq0t" path="res://resources/pictures/zeton100.png" id="3_rknpe"]
+[ext_resource type="Texture2D" uid="uid://bok7f0xpydaw1" path="res://resources/pictures/zeton500.png" id="4_6kox7"]
+[ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="5_ysyom"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2pja3"]
 font = ExtResource("5_ysyom")

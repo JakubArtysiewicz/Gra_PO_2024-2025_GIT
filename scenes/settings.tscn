@@ -1,24 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbg22xkixbdgf"]
+[gd_scene load_steps=5 format=3 uid="uid://bbg22xkixbdgf"]
 
 [ext_resource type="Script" path="res://scenes/settings.gd" id="1_wgtvd"]
-[ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/Casino3DFilled.ttf" id="2_uaay8"]
+[ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="2_uaay8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qrri6"]
+font = ExtResource("2_uaay8")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_3y4aj"]
+font = ExtResource("2_uaay8")
+font_size = 46
 
 [node name="Settings" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_wgtvd")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 1153.0
-offset_bottom = 323.0
-
 [node name="Historia" type="Button" parent="."]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 493.0
-offset_right = 398.0
-offset_bottom = 607.0
+offset_left = 183.0
+offset_top = 7.0
+offset_right = 328.0
+offset_bottom = 93.0
 theme_override_fonts/font = ExtResource("2_uaay8")
 text = "Historia"
 
@@ -32,5 +35,63 @@ theme_override_fonts/font = ExtResource("2_uaay8")
 text = "back
 "
 
+[node name="UstawieniaLabel" type="Label" parent="."]
+layout_mode = 2
+offset_left = 1.0
+offset_top = 8.0
+offset_right = 1151.0
+offset_bottom = 90.0
+text = "Ustawienia"
+label_settings = SubResource("LabelSettings_qrri6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 379.0
+offset_top = 111.0
+offset_right = 1130.0
+offset_bottom = 186.0
+
+[node name="Glosnosc" type="Label" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 129.0
+offset_right = 222.0
+offset_bottom = 192.0
+text = "Glosnosc"
+label_settings = SubResource("LabelSettings_3y4aj")
+
+[node name="rozdzielczosc" type="Label" parent="."]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 187.0
+offset_right = 337.0
+offset_bottom = 250.0
+text = "Rozdzielczosc
+"
+label_settings = SubResource("LabelSettings_3y4aj")
+
+[node name="MenuButton" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 174.0
+offset_right = 1135.0
+offset_bottom = 227.0
+item_count = 1
+popup/item_0/text = "chuj"
+popup/item_0/id = 0
+
+[node name="savesettings" type="Button" parent="."]
+layout_mode = 0
+offset_left = 412.0
+offset_top = 558.0
+offset_right = 704.0
+offset_bottom = 614.0
+theme_override_fonts/font = ExtResource("2_uaay8")
+text = "Save
+"
+
 [connection signal="pressed" from="Historia" to="." method="_on_historia_pressed"]
 [connection signal="pressed" from="back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="savesettings" to="." method="_on_savesettings_pressed"]
