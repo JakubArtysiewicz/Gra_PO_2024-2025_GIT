@@ -1,12 +1,13 @@
-#extends Control
-#
-#@export var volume_slider: HSlider
-#@export var resolution_dropdown: OptionButton
-#@export var settings_file: String = "res://resources/config_files/settings.cfg"  # Ścieżka do pliku ustawień
-#
-#var settings = { "volume": 50, "resolution": "1920x1080" }  # Domyślne ustawienia
-#
-#func _ready():
+extends Control
+
+@export var volume_slider: HSlider
+@export var resolution_dropdown: OptionButton
+@export var settings_file: String = "res://resources/config_files/settings.cfg"  # Ścieżka do pliku ustawień
+
+var settings = { "volume": 50, "resolution": "1920x1080" }  # Domyślne ustawienia
+
+func _ready():
+	pass
 	#load_settings()
 	#update_ui()
 #
@@ -27,11 +28,14 @@
 		#if resolution_dropdown.get_item_text(i) == settings["resolution"]:
 			#resolution_dropdown.select(i)
 			#break
-#func _on_historia_pressed():
-	#get_tree().change_scene_to_file("res://scenes/ostatnie_gry.tscn")
-#func _on_back_pressed():
-	#get_tree().change_scene_to_file("res://scenes/menu.tscn")
-#
+func _process(delta):
+	pass
+	
+func _on_historia_pressed():
+	get_tree().change_scene_to_file("res://scenes/ostatnie_gry.tscn")
+func _on_back_pressed():
+	get_tree().change_scene_to_file("res://scenes/menu.tscn")
+
 #
 #func _on_savesettings_pressed():
 	#settings["volume"] = volume_slider.value

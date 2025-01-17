@@ -2,11 +2,38 @@
 #KAR = Karo (♦) – karty w kolorze czerwonym = 1
 #KIE = Kier (♥) – karty w kolorze czerwonym = 2
 #TRE = Trefl (♣) – karty w kolorze czarnym = 3
+
 extends Node2D
+
+var poczatkowa_wartosc_rozmieszczenia_kart_gracza_px = 550
+var poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px = 550
+var poczatkowa_wartosc_rozmieszczenia_kart_gracza_py = 400
+var poczatkowa_wartosc_rozmieszczenia_kart_krupiera_py = 150
 
 var akutalny_wynik_gry = ""
 
+var lista_obiektow_kart = []
+
 var config_file = ConfigFile.new()
+
+func cofanie_do_podstaw_karty():
+	poczatkowa_wartosc_rozmieszczenia_kart_gracza_px = 550
+	poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px = 550
+	poczatkowa_wartosc_rozmieszczenia_kart_gracza_py = 400
+	poczatkowa_wartosc_rozmieszczenia_kart_krupiera_py = 150
+	while lista_obiektow_kart.size() > 0:
+		lista_obiektow_kart[0].visible = false
+		lista_obiektow_kart.pop_front()
+
+func wyswietl_karty_gra(rodzaj_gracza):
+	if rodzaj_gracza == karty_gracza:
+		wyswietl_karty(rodzaj_gracza[-1][0],rodzaj_gracza[-1][1],poczatkowa_wartosc_rozmieszczenia_kart_gracza_px,poczatkowa_wartosc_rozmieszczenia_kart_gracza_py)
+		
+		poczatkowa_wartosc_rozmieszczenia_kart_gracza_px += 50
+				
+	if rodzaj_gracza == karty_krupiera:
+		wyswietl_karty(rodzaj_gracza[-1][0],rodzaj_gracza[-1][1],poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px,poczatkowa_wartosc_rozmieszczenia_kart_krupiera_py)
+		poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px += 50
 
 func wyswietl_karty(typ,numer,px,py):
 	var sprite = Sprite2D.new()
@@ -17,6 +44,7 @@ func wyswietl_karty(typ,numer,px,py):
 	sprite.position = Vector2(px,py)
 	sprite.scale = Vector2(0.2, 0.2)
 	add_child(sprite)
+	lista_obiektow_kart.append(sprite)
 		
 
 func aktualna_godzina():
@@ -66,13 +94,6 @@ func odczytywanie_z_pliku_konf(sekcja, zmienna):
 		return wartosci
 	else:
 		print("Błąd przy ładowaniu pliku konfiguracyjnego:", err)
-		
-#func load_list_from_config() -> Array:
-	#var err = config_file.load("res://resources/config_files/config_files.cfg")
-	#if err != OK:
-		#print("Błąd ładowania pliku:", err)
-		#return []
-	#return config_file.get_value("historia", "lista", [])
 	
 func add_value_to_config_list_history(value: String):
 	config_file.load("res://resources/Config_files/config_files.cfg")
@@ -102,7 +123,6 @@ var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
 		
 func _ready():
-	wyswietl_karty("trefl",3,550,200)
 	Musicmanager
 	randomize()
 	var blad = config_file.load("res://resources/config_files/config_files.cfg")
@@ -120,9 +140,10 @@ func _ready():
 
 var wszystkie_pieniadze = odczytywanie_z_pliku_konf("pieniadze", "wszystkie_pieniadze")
 var polozone_pieniadze = odczytywanie_z_pliku_konf("pieniadze","polozone_pieniadze")
-	
+
+
 func _process(delta):
-	#Updateowanie w czasie gry zmiany zakładów, ilość wszystkich pieniedzy
+	
 	$wszystkiepieniadze.text = "wszystkie pieniadze: " + str(wszystkie_pieniadze)
 	$postawionepieniadze.text = "postawione pieniadze: " + str(polozone_pieniadze)
 
@@ -148,7 +169,6 @@ func sprawdzenie_wartosci_kart(lista):
 			
 		
 func losowanie_karty(lista):
-	
 	if karty_piki.size() == 0:
 		lista_dostepnych_kolorow.erase(0)
 	if karty_karo.size() == 0:
@@ -163,33 +183,38 @@ func losowanie_karty(lista):
 	
 		if kolor_wylosowany == 0:
 			var liczba_wylosowana = randi() % karty_piki.size()
-			lista.append(["piki",karty_piki[liczba_wylosowana]])
+			lista.append([0,karty_piki[liczba_wylosowana]])
 			karty_piki.erase(karty_piki[liczba_wylosowana])
 		
 		if kolor_wylosowany == 1:
 			var liczba_wylosowana = randi() % karty_karo.size()
-			lista.append(["karo",karty_karo[liczba_wylosowana]])
+			lista.append([1,karty_karo[liczba_wylosowana]])
 			karty_karo.erase(karty_karo[liczba_wylosowana])
 	
 		if kolor_wylosowany == 2:
 			var liczba_wylosowana = randi() % karty_kier.size()
-			lista.append(["kier",karty_kier[liczba_wylosowana]])
+			lista.append([2,karty_kier[liczba_wylosowana]])
 			karty_kier.erase(karty_kier[liczba_wylosowana])
 	
 		if kolor_wylosowany == 3:
 			var liczba_wylosowana = randi() % karty_trefl.size()
-			lista.append(["trefl",karty_trefl[liczba_wylosowana]])
+			lista.append([3,karty_trefl[liczba_wylosowana]])
 			karty_trefl.erase(karty_trefl[liczba_wylosowana])
-			
 	else:
 		print(null)
 		
+	wyswietl_karty_gra(lista)
+		
 func dobranie_na_start_krupier():
+	
 	losowanie_karty(karty_krupiera)
+	
 	losowanie_karty(karty_krupiera)
 
 func dobieranie_na_start_gracz():
+	
 	losowanie_karty(karty_gracza)
+	
 	losowanie_karty(karty_gracza)
 
 func _on_start_pressed():
@@ -290,6 +315,7 @@ func przegrana():
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)	
+	cofanie_do_podstaw_karty()
 	zapisywanie_gry()
 	
 # Zapisywnie gry po wygranej gracza
@@ -314,6 +340,7 @@ func wygrana():
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)
+	cofanie_do_podstaw_karty()
 	zapisywanie_gry()
 	
 # Zapisywnie gry po remisie gracza
@@ -337,6 +364,7 @@ func remis():
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)
+	cofanie_do_podstaw_karty()
 	zapisywanie_gry()
 
 func show_popup(message): 
