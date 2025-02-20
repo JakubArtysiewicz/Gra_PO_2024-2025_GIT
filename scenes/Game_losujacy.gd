@@ -223,6 +223,9 @@ func dobieranie_na_start_gracz():
 	losowanie_karty(karty_gracza)
 
 func _on_start_pressed():
+	ilosc_postawionych_zetonow_100=0
+	ilosc_postawionych_zetonow_500=0
+	cofanie_do_podstaw_karty()
 	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if polozone_pieniadze != 0:
@@ -263,7 +266,7 @@ func _on_niedobierz_pressed():
 		wygrana()
 	if sprawdzenie_wartosci_kart(karty_gracza)<sprawdzenie_wartosci_kart(karty_krupiera):
 		przegrana()
-	elif sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
+	if sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
 		remis()
 		
 func _on_x_pressed():
@@ -320,7 +323,7 @@ func przegrana():
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)	
-	cofanie_do_podstaw_karty()
+	#cofanie_do_podstaw_karty()
 	zapisywanie_gry()
 	
 # Zapisywnie gry po wygranej gracza
@@ -345,7 +348,7 @@ func wygrana():
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)
-	cofanie_do_podstaw_karty()
+	#cofanie_do_podstaw_karty()
 	zapisywanie_gry()
 	
 # Zapisywnie gry po remisie gracza
@@ -369,7 +372,7 @@ func remis():
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_500,$usuwniezeton500)
-	cofanie_do_podstaw_karty()
+	#cofanie_do_podstaw_karty()
 	zapisywanie_gry()
 
 func show_popup(message): 
