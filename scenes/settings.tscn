@@ -46,12 +46,15 @@ label_settings = SubResource("LabelSettings_qrri6")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="."]
+[node name="volume_slider" type="HSlider" parent="."]
 layout_mode = 0
 offset_left = 379.0
 offset_top = 111.0
 offset_right = 1130.0
 offset_bottom = 186.0
+max_value = 1.0
+step = 0.05
+value = 0.3
 
 [node name="Glosnosc" type="Label" parent="."]
 layout_mode = 0
@@ -92,6 +95,16 @@ theme_override_fonts/font = ExtResource("2_uaay8")
 text = "Save
 "
 
+[node name="Fullscreen" type="Button" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 263.0
+offset_right = 368.0
+offset_bottom = 343.0
+text = "Fullscreen"
+
 [connection signal="pressed" from="Historia" to="." method="_on_historia_pressed"]
 [connection signal="pressed" from="back" to="." method="_on_back_pressed"]
+[connection signal="value_changed" from="volume_slider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="pressed" from="savesettings" to="." method="_on_savesettings_pressed"]
+[connection signal="pressed" from="Fullscreen" to="." method="_on_fullscreen_pressed"]

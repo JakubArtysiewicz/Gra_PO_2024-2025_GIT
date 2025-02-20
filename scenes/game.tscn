@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://cq0e5pyy4ae3"]
+[gd_scene load_steps=12 format=3 uid="uid://cq0e5pyy4ae3"]
 
 [ext_resource type="Texture2D" uid="uid://da6qblplenj3a" path="res://resources/pictures/Blackjack_stol.jpg" id="1_iq1nm"]
 [ext_resource type="Script" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
 [ext_resource type="Texture2D" uid="uid://be1o1jwpjiq0t" path="res://resources/pictures/zeton100.png" id="3_rknpe"]
 [ext_resource type="Texture2D" uid="uid://bok7f0xpydaw1" path="res://resources/pictures/zeton500.png" id="4_6kox7"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="5_ysyom"]
+[ext_resource type="Texture2D" uid="uid://d28cxk6bwl2no" path="res://resources/pictures/cards/tyl_karty.jpg" id="6_je42v"]
+[ext_resource type="Script" path="res://scenes/karta_do_poruszania.gd" id="7_nna52"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2pja3"]
 font = ExtResource("5_ysyom")
@@ -144,6 +146,12 @@ position = Vector2i(0, 36)
 size = Vector2i(664, 106)
 dialog_text = "Czy napewno chcesz wyjść ? 
 (zostanie to uznane za poddanie się i stracisz pieniądze)"
+
+[node name="karta_do_poruszania" type="Sprite2D" parent="."]
+position = Vector2(1214, 310)
+scale = Vector2(0.174373, 0.16096)
+texture = ExtResource("6_je42v")
+script = ExtResource("7_nna52")
 
 [connection signal="pressed" from="BlackjackStol/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="BlackjackStol/back" to="." method="_on_back_pressed"]

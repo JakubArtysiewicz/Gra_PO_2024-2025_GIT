@@ -1,13 +1,17 @@
 extends Control
 
-@export var volume_slider: HSlider
-@export var resolution_dropdown: OptionButton
-@export var settings_file: String = "res://resources/config_files/settings.cfg"  # Ścieżka do pliku ustawień
+@export var volume_slider: $volume_slider
+#@export var resolution_dropdown: OptionButton
+#@export var settings_file: String = "res://resources/config_files/settings.cfg"  # Ścieżka do pliku ustawień
 
-var settings = { "volume": 50, "resolution": "1920x1080" }  # Domyślne ustawienia
+#var settings = { "volume": 50, "resolution": "1920x1080" }  # Domyślne ustawienia
 
 func _ready():
-	pass
+	
+	var volume = load_volume()
+	slider.value = volume
+	apply_volume(volume)
+	
 	#load_settings()
 	#update_ui()
 #
@@ -44,3 +48,27 @@ func _on_back_pressed():
 	## Zapisz ustawienia
 	#save_settings()
 	#get_tree().change_scene("res://scenes/MainMenu.tscn")  # Powrót do menu głównego
+
+
+
+func _on_fullscreen_pressed():
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
+
+func _on_volume_slider_value_changed(value):
+	apply_volume(value)
+	save_volume(value)
+
+func apply_volume(value):
+	var db_value = linear_to_db(value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db_value)
+
+func save_volume(value):
+	var config = ConfigFile()
+	config.set_value("audio", "volume", value)
+	config.save("res://resources/config_files/")
+
+func load_volume():
+	var config = ConfigFile()
+	if config.load("user://settings.cfg") == OK:
+		return config.get_value("audio", "volume", 0.3)
+	return 0.3

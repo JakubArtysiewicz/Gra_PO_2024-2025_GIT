@@ -123,8 +123,13 @@ var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
 		
 func _ready():
+
+	var card = get_node("karta_do_poruszania")
+	#card.move_to(Vector2(poczatkowa_wartosc_rozmieszczenia_kart_gracza_px, poczatkowa_wartosc_rozmieszczenia_kart_gracza_py))
+	
 	Musicmanager
 	randomize()
+	
 	var blad = config_file.load("res://resources/config_files/config_files.cfg")
 	if blad != OK or config_file.get_value("game_data", "first_run", true):
 		config_file.set_value("game_data", "first_run", false)
@@ -271,11 +276,11 @@ func _on_x_pressed():
 		show_popup("Za mało pieniedzy")
 	$"2x".visible = false
 		
-	
+		
 func _on_zeton_500_pressed():
 	if wszystkie_pieniadze>=500:
 		if ilosc_postawionych_zetonow_500>0:
-			create_image_do_zetonow("res://resources/zeton500.png",230,300,lista_nodeow_postawionych_zetonow_500)	
+			create_image_do_zetonow("res://resources/pictures/zeton500.png",230,300,lista_nodeow_postawionych_zetonow_500)	
 		ilosc_postawionych_zetonow_500 += 1
 		polozone_pieniadze+=500
 		wszystkie_pieniadze-=500
@@ -286,7 +291,7 @@ func _on_zeton_500_pressed():
 func _on_zeton_100_pressed():
 	if wszystkie_pieniadze>=100:
 		if ilosc_postawionych_zetonow_100>0:
-			create_image_do_zetonow("res://resources/zeton100.png",170,190,lista_nodeow_postawionych_zetonow_100)
+			create_image_do_zetonow("res://resources/pictures/zeton100.png",170,190,lista_nodeow_postawionych_zetonow_100)
 		ilosc_postawionych_zetonow_100 += 1 	
 		polozone_pieniadze+=100
 		wszystkie_pieniadze-=100
@@ -423,5 +428,5 @@ func _on_back_pressed():
 func _on_confirmation_dialog_confirmed():
 	przegrana() 
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
-	
+
 
