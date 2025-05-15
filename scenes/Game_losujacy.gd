@@ -211,7 +211,6 @@ func losowanie_karty(lista):
 	wyswietl_karty_gra(lista)
 		
 func dobranie_na_start_krupier():
-	
 	losowanie_karty(karty_krupiera)
 	
 	losowanie_karty(karty_krupiera)
@@ -240,7 +239,7 @@ func _on_start_pressed():
 		print("Karty gracza:", karty_gracza, sprawdzenie_wartosci_kart(karty_gracza))
 		print("Karty krupiera:", karty_krupiera, sprawdzenie_wartosci_kart(karty_krupiera))
 
-		$BlackjackStol/Start.visible = false 
+		$Start.visible = false 
 	else:
 		show_popup("Prosze dodać zakład")
 		
@@ -431,5 +430,3 @@ func _on_back_pressed():
 func _on_confirmation_dialog_confirmed():
 	przegrana() 
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
-
-
