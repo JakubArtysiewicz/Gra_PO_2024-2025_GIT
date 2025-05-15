@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chhjgq06j4lk"
-path="res://.godot/imported/K.jpg-6ead484e4e04f0b7880e0df5c6898716.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
-source_file="res://resources/pictures/cards/3/K.jpg"
-dest_files=["res://.godot/imported/K.jpg-6ead484e4e04f0b7880e0df5c6898716.ctex"]
+source_file="res://resources/pictures/cards/3/K.png"
 
 [params]
 

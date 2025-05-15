@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bbg22xkixbdgf"]
 
-[ext_resource type="Script" path="res://scenes/settings.gd" id="1_wgtvd"]
+[ext_resource type="Script" uid="uid://bma5n3edjexss" path="res://scenes/settings.gd" id="1_wgtvd"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="2_uaay8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qrri6"]

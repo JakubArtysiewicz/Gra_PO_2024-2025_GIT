@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://r8s0gmex0rfs"]
 
-[ext_resource type="Script" path="res://scenes/ostatnie_gry.gd" id="1_gh53u"]
+[ext_resource type="Script" uid="uid://dimd3tggi4y32" path="res://scenes/ostatnie_gry.gd" id="1_gh53u"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="2_5a7p0"]
 [ext_resource type="Texture2D" uid="uid://bbs5ul1pr61rt" path="res://resources/pictures/alpha_male.jpg" id="3_fh5gq"]
 
