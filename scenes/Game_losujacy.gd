@@ -16,6 +16,10 @@ var lista_obiektow_kart = []
 
 var config_file = ConfigFile.new()
 
+func animacja_dobierania_karty():
+	var tween = get_tree().create_tween()
+	tween.tween_property($TylKarty, "position", Vector2(500, 600), 1.0)
+
 func cofanie_do_podstaw_karty():
 	poczatkowa_wartosc_rozmieszczenia_kart_gracza_px = 550
 	poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px = 550
@@ -123,6 +127,7 @@ var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
 		
 func _ready():
+	animacja_dobierania_karty()
 
 	var card = get_node("karta_do_poruszania")
 	#card.move_to(Vector2(poczatkowa_wartosc_rozmieszczenia_kart_gracza_px, poczatkowa_wartosc_rozmieszczenia_kart_gracza_py))

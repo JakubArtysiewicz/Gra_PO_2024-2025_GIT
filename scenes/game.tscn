@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cq0e5pyy4ae3"]
+[gd_scene load_steps=13 format=3 uid="uid://cq0e5pyy4ae3"]
 
 [ext_resource type="Script" uid="uid://qce5lw7ucdru" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
 [ext_resource type="Texture2D" uid="uid://sx3ii4oakcmc" path="res://resources/pictures/Blackjack_stol-1.jpg" id="2_p57ef"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bok7f0xpydaw1" path="res://resources/pictures/zeton500.png" id="4_6kox7"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="5_ysyom"]
 [ext_resource type="Script" uid="uid://dylyjrmji3tcv" path="res://scenes/karta_do_poruszania.gd" id="7_nna52"]
+[ext_resource type="Texture2D" uid="uid://i3d3krnegccv" path="res://resources/pictures/tyl_karty.png" id="7_u5sy4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2pja3"]
 font = ExtResource("5_ysyom")
@@ -23,7 +24,6 @@ font = ExtResource("5_ysyom")
 font_size = 32
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p57ef"]
-load_path = "res://.godot/imported/tyl_karty.jpg-1c34685c594598e90c079a3a7f9383c8.ctex"
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_ufpdv")
@@ -157,6 +157,11 @@ offset_bottom = 78.0
 theme_override_fonts/font = ExtResource("5_ysyom")
 theme_override_font_sizes/font_size = 40
 text = "Menu"
+
+[node name="TylKarty" type="Sprite2D" parent="."]
+position = Vector2(1278, 309)
+scale = Vector2(0.114, 0.114)
+texture = ExtResource("7_u5sy4")
 
 [connection signal="pressed" from="2x" to="." method="_on_x_pressed"]
 [connection signal="pressed" from="Dobierz" to="." method="_on_dobierz_pressed"]
