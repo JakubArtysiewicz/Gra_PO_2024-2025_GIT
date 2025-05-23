@@ -15,12 +15,16 @@ var akutalny_wynik_gry = ""
 var lista_obiektow_kart = []
 
 var config_file = ConfigFile.new()
-
-func animacja_dobierania_karty():
-	var tween = get_tree().create_tween()
-	tween.tween_property($TylKarty, "position", Vector2(500, 600), 1.0)
+#
+#func animacja_dobierania_karty():
+	#var tween = get_tree().create_tween()
+	#tween.tween_property($TylKarty, "position", Vector2(500, 600),1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	#await tween.finished
+	#$TylKarty.position = Vector2(585, -100)
+	
 
 func cofanie_do_podstaw_karty():
+	$TylKarty4.visible = false
 	poczatkowa_wartosc_rozmieszczenia_kart_gracza_px = 550
 	poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px = 550
 	poczatkowa_wartosc_rozmieszczenia_kart_gracza_py = 400
@@ -31,19 +35,29 @@ func cofanie_do_podstaw_karty():
 
 func wyswietl_karty_gra(rodzaj_gracza):
 	if rodzaj_gracza == karty_gracza:
-		wyswietl_karty(rodzaj_gracza[-1][0],rodzaj_gracza[-1][1],poczatkowa_wartosc_rozmieszczenia_kart_gracza_px,poczatkowa_wartosc_rozmieszczenia_kart_gracza_py)
+		var tween = get_tree().create_tween()
+		tween.tween_property($TylKarty, "position", Vector2(poczatkowa_wartosc_rozmieszczenia_kart_gracza_px, poczatkowa_wartosc_rozmieszczenia_kart_gracza_py),1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+		$TylKarty.position = Vector2(585, -100)
 		
+		wyswietl_karty(rodzaj_gracza[-1][0],rodzaj_gracza[-1][1],poczatkowa_wartosc_rozmieszczenia_kart_gracza_px,poczatkowa_wartosc_rozmieszczenia_kart_gracza_py)
 		poczatkowa_wartosc_rozmieszczenia_kart_gracza_px += 50
 				
 	if rodzaj_gracza == karty_krupiera:
+		
+		var tween = get_tree().create_tween()
+		tween.tween_property($TylKarty2, "position", Vector2(poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px, poczatkowa_wartosc_rozmieszczenia_kart_krupiera_py),1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
+		$TylKarty2.position = Vector2(585, -100)
+		
 		wyswietl_karty(rodzaj_gracza[-1][0],rodzaj_gracza[-1][1],poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px,poczatkowa_wartosc_rozmieszczenia_kart_krupiera_py)
 		poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px += 50
 
 func wyswietl_karty(typ,numer,px,py):
 	var sprite = Sprite2D.new()
 	var texture = load("res://resources/pictures/cards/%s/%s.png"%[typ,numer])
-	if texture == null:
-		texture = load("res://resources/pictures/cards/%s/%s.jpg"%[typ,numer])
+	#if texture == null:
+		#texture = load("res://resources/pictures/cards/%s/%s.jpg"%[typ,numer])
 	sprite.texture = texture
 	sprite.position = Vector2(px,py)
 	sprite.scale = Vector2(0.2, 0.2)
@@ -105,10 +119,10 @@ func add_value_to_config_list_history(value: String):
 	current_list.append(value)  # Dodaj nową wartość
 	config_file.set_value("historia", "lista", current_list)  # Zapisz zmodyfikowaną listę
 	var err = config_file.save("res://resources/config_files/config_files.cfg")
-	if err == OK:
-		print("Lista zapisana pomyślnie:", current_list)
-	else:
-		print("Błąd zapisu:", err)
+	#if err == OK:
+		##print("Lista zapisana pomyślnie:", current_list)
+	#else:
+		#print("Błąd zapisu:", err)
 
 var karty_piki = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
 var karty_karo = [2,3,4,5,6,7,8,9,10,"A","J","Q","K"]
@@ -127,7 +141,7 @@ var lista_nodeow_postawionych_zetonow_100 = []
 var lista_nodeow_postawionych_zetonow_500 = []
 		
 func _ready():
-	animacja_dobierania_karty()
+	#animacja_dobierania_karty()
 
 	var card = get_node("karta_do_poruszania")
 	#card.move_to(Vector2(poczatkowa_wartosc_rozmieszczenia_kart_gracza_px, poczatkowa_wartosc_rozmieszczenia_kart_gracza_py))
@@ -140,7 +154,7 @@ func _ready():
 		config_file.set_value("game_data", "first_run", false)
 		config_file.set_value("pieniadze", "wszystkie_pieniadze", 10000)
 		config_file.save("res://resources/config_files/config_files.cfg")
-		
+	$TylKarty4.visible = false
 	$Popup.hide()
 	$usuwniezeton100.visible = false
 	$usuwniezeton500.visible = false
@@ -217,15 +231,26 @@ func losowanie_karty(lista):
 		
 func dobranie_na_start_krupier():
 	losowanie_karty(karty_krupiera)
-	
+	var tween = get_tree().create_tween()
+	tween.tween_property($TylKarty, "position", Vector2(poczatkowa_wartosc_rozmieszczenia_kart_krupiera_px, poczatkowa_wartosc_rozmieszczenia_kart_krupiera_py),1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	#$TylKarty.position = Vector2(585, -100)
 	losowanie_karty(karty_krupiera)
+	print("Karty krupiera:", karty_krupiera, sprawdzenie_wartosci_kart(karty_krupiera))
+	
+	
 
 func dobieranie_na_start_gracz():
-	
 	losowanie_karty(karty_gracza)
-	
+	var tween = get_tree().create_tween()
+	tween.tween_property($TylKarty, "position", Vector2(poczatkowa_wartosc_rozmieszczenia_kart_gracza_px, poczatkowa_wartosc_rozmieszczenia_kart_gracza_py),1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	$TylKarty.position = Vector2(585, -100)
 	losowanie_karty(karty_gracza)
+	print("Karty gracza:", karty_gracza, sprawdzenie_wartosci_kart(karty_gracza))
+	#print("Karty krupiera:", karty_krupiera, sprawdzenie_wartosci_kart(karty_krupiera))
 
+	
 func _on_start_pressed():
 	ilosc_postawionych_zetonow_100=0
 	ilosc_postawionych_zetonow_500=0
@@ -258,19 +283,26 @@ func _on_dobierz_pressed():
 		
 
 func _on_niedobierz_pressed():
-	while sprawdzenie_wartosci_kart(karty_krupiera)<17:
+	$TylKarty4.visible = false
+	if sprawdzenie_wartosci_kart(karty_krupiera) > sprawdzenie_wartosci_kart(karty_gracza):
 		losowanie_karty(karty_krupiera)
 		print(karty_krupiera,sprawdzenie_wartosci_kart(karty_krupiera))
-	if sprawdzenie_wartosci_kart(karty_krupiera) < sprawdzenie_wartosci_kart(karty_gracza) and sprawdzenie_wartosci_kart(karty_gracza)!=21 and sprawdzenie_wartosci_kart(karty_krupiera)!=20:
+		if sprawdzenie_wartosci_kart(karty_krupiera) > sprawdzenie_wartosci_kart(karty_gracza):
+			losowanie_karty(karty_krupiera)
+			print(karty_krupiera,sprawdzenie_wartosci_kart(karty_krupiera))
+			if sprawdzenie_wartosci_kart(karty_krupiera) > sprawdzenie_wartosci_kart(karty_gracza):
+				losowanie_karty(karty_krupiera)
+				print(karty_krupiera,sprawdzenie_wartosci_kart(karty_krupiera))
+	if sprawdzenie_wartosci_kart(karty_krupiera) < sprawdzenie_wartosci_kart(karty_gracza) and sprawdzenie_wartosci_kart(karty_krupiera)!=21:
 		losowanie_karty(karty_krupiera)
 		print(karty_krupiera,sprawdzenie_wartosci_kart(karty_krupiera))
 	if sprawdzenie_wartosci_kart(karty_krupiera)>21:
 		wygrana()
-	if sprawdzenie_wartosci_kart(karty_gracza)>sprawdzenie_wartosci_kart(karty_krupiera):
+	elif sprawdzenie_wartosci_kart(karty_gracza)>sprawdzenie_wartosci_kart(karty_krupiera):
 		wygrana()
-	if sprawdzenie_wartosci_kart(karty_gracza)<sprawdzenie_wartosci_kart(karty_krupiera):
+	elif sprawdzenie_wartosci_kart(karty_gracza)<sprawdzenie_wartosci_kart(karty_krupiera):
 		przegrana()
-	if sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
+	elif sprawdzenie_wartosci_kart(karty_krupiera)==sprawdzenie_wartosci_kart(karty_gracza):
 		remis()
 		
 func _on_x_pressed():
@@ -322,7 +354,7 @@ func przegrana():
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	$BlackjackStol/Start.visible = true
+	$Start.visible = true
 	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_PASS
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
@@ -347,7 +379,7 @@ func wygrana():
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	$BlackjackStol/Start.visible = true	
+	$Start.visible = true	
 	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_PASS
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)
@@ -371,7 +403,7 @@ func remis():
 	$"2x".visible = false
 	$Dobierz.visible = false
 	$Niedobierz.visible = false
-	$BlackjackStol/Start.visible = true
+	$Start.visible = true
 	$usuwniezeton100.mouse_filter = Control.MOUSE_FILTER_PASS
 	$usuwniezeton500.mouse_filter = Control.MOUSE_FILTER_PASS
 	usuwanie_po_grze_zetonow(lista_nodeow_postawionych_zetonow_100,$usuwniezeton100)

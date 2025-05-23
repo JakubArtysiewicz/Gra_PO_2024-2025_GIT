@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://cq0e5pyy4ae3"]
+[gd_scene load_steps=11 format=3 uid="uid://cq0e5pyy4ae3"]
 
 [ext_resource type="Script" uid="uid://qce5lw7ucdru" path="res://scenes/Game_losujacy.gd" id="1_ufpdv"]
 [ext_resource type="Texture2D" uid="uid://sx3ii4oakcmc" path="res://resources/pictures/Blackjack_stol-1.jpg" id="2_p57ef"]
 [ext_resource type="Texture2D" uid="uid://be1o1jwpjiq0t" path="res://resources/pictures/zeton100.png" id="3_rknpe"]
 [ext_resource type="Texture2D" uid="uid://bok7f0xpydaw1" path="res://resources/pictures/zeton500.png" id="4_6kox7"]
 [ext_resource type="FontFile" uid="uid://bdl23v2r6w7ol" path="res://resources/fonts/Casino3DFilled.ttf" id="5_ysyom"]
-[ext_resource type="Script" uid="uid://dylyjrmji3tcv" path="res://scenes/karta_do_poruszania.gd" id="7_nna52"]
 [ext_resource type="Texture2D" uid="uid://i3d3krnegccv" path="res://resources/pictures/tyl_karty.png" id="7_u5sy4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2pja3"]
@@ -23,9 +22,9 @@ font_size = 32
 font = ExtResource("5_ysyom")
 font_size = 32
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p57ef"]
-
 [node name="Game" type="Node2D"]
+z_index = 4096
+z_as_relative = false
 script = ExtResource("1_ufpdv")
 
 [node name="BlackjackStol" type="Sprite2D" parent="."]
@@ -81,7 +80,6 @@ offset_bottom = 455.0
 label_settings = SubResource("LabelSettings_fj88m")
 
 [node name="Popup" type="Popup" parent="."]
-visible = true
 
 [node name="Label" type="Label" parent="Popup"]
 offset_right = 40.0
@@ -133,12 +131,6 @@ size = Vector2i(664, 106)
 dialog_text = "Czy napewno chcesz wyjść ? 
 (zostanie to uznane za poddanie się i stracisz pieniądze)"
 
-[node name="karta_do_poruszania" type="Sprite2D" parent="."]
-position = Vector2(1214, 310)
-scale = Vector2(0.174373, 0.16096)
-texture = SubResource("CompressedTexture2D_p57ef")
-script = ExtResource("7_nna52")
-
 [node name="Start" type="Button" parent="."]
 offset_left = 813.0
 offset_top = 518.0
@@ -159,7 +151,25 @@ theme_override_font_sizes/font_size = 40
 text = "Menu"
 
 [node name="TylKarty" type="Sprite2D" parent="."]
-position = Vector2(1278, 309)
+position = Vector2(569, -97)
+scale = Vector2(0.114, 0.114)
+texture = ExtResource("7_u5sy4")
+
+[node name="TylKarty2" type="Sprite2D" parent="."]
+position = Vector2(574, -96)
+scale = Vector2(0.114, 0.114)
+texture = ExtResource("7_u5sy4")
+
+[node name="TylKarty3" type="Sprite2D" parent="."]
+position = Vector2(580, -92)
+scale = Vector2(0.114, 0.114)
+texture = ExtResource("7_u5sy4")
+
+[node name="TylKarty4" type="Sprite2D" parent="."]
+visible = false
+z_index = 4096
+z_as_relative = false
+position = Vector2(600, 150)
 scale = Vector2(0.114, 0.114)
 texture = ExtResource("7_u5sy4")
 
